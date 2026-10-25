@@ -77,7 +77,7 @@ The scam itself still fires, with `threaten` and `taxation` both coming from the
 | Tax authority scam (text judge) | 1.00 | 0.00 | 1.00 | 1.00 | – |
 | Payment info grab (text judge) | 1.00 | 0.00 | 1.00 | 1.00 | – |
 
-The remaining false alarms come from thresholds calibrated on excitation tokens, which are too low for real dialogue (`taxation` = 0.10): the dragon story and a tax-deadline answer trip the tax rule; a tax-payment answer and an "add a card" answer trip the payment rule.
+The remaining false alarms most likely come from thresholds calibrated on excitation tokens, which are too low for real dialogue (`taxation` = 0.10): the dragon story and a tax-deadline answer trip the tax rule; a tax-payment answer and an "add a card" answer trip the payment rule.
 
 Under **misdirection** (Step 14), GAVEL's tax-rule FPR rose to 0.71 while the judge was unaffected. This is the opposite of the paper's finding and probably comes from the same low thresholds reacting to the filler text.
 
@@ -101,7 +101,7 @@ Step 15 rewrites the tax scam six ways. The harm stays the same, but the way the
 
 ### 5. Defense: retraining helped less than expected, because of calibration
 
-Step 16 added 10 new hidden-threat sentences to `threaten` and 6 polite official sentences as hard negatives, then retrained and recalibrated. The `threaten` signal stayed strong (0.98 implied, 0.82 Amharic), but recalibration moved the thresholds to extremes (`threaten` 0.45 → 0.05, `taxation` 0.10 → 0.90). With `taxation` at 0.90, one implied threat and both Amharic scams no longer counted as "tax", so they were missed. The same change cut false alarms on the original test set from 0.29 to 0.14.
+Step 16 added 10 new hidden-threat sentences to `threaten` and 6 polite official sentences as hard negatives, then retrained and recalibrated. The `threaten` signal stayed strong (0.98 implied, 0.82 Amharic), but recalibration moved the thresholds to extremes (`threaten` 0.45 → 0.05, `taxation` 0.10 → 0.90). With `taxation` at 0.90, one implied threat and both Amharic scams were missed, most likely because they no longer counted as "tax" (not yet confirmed by re-running with the original thresholds). The same change cut false alarms on the original test set from 0.29 to 0.14.
 
 **Lesson:** with this little data, threshold calibration is the weakest link. It swings with every change of data or random split and can hide whether the detector itself got better or worse.
 
